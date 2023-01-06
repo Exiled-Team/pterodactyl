@@ -1,5 +1,8 @@
 #!/bin/bash
 echo "Hello!"
+# Default the TZ environment variable to UTC.
+TZ=${TZ:-UTC}
+export TZ
 cd /home/container || exit
 MODIFIED_STARTUP=$(eval echo "$(echo "${STARTUP}" | sed -e 's/{{/${/g' -e 's/}}/}/g')")
 echo "/home/container/scp_server$: ${MODIFIED_STARTUP}"

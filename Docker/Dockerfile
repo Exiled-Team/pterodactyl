@@ -8,6 +8,7 @@ RUN apt-get install apt-transport-https ca-certificates software-properties-comm
 RUN echo "deb https://download.mono-project.com/repo/ubuntu stable-xenial main" | tee /etc/apt/sources.list.d/mono-official-stable.list
 RUN apt-get update
 RUN apt-get install -y mono-complete
+RUN apt-get install -y tzdata
 
 RUN add-apt-repository multiverse
 RUN curl -fsSL https://deb.nodesource.com/setup_15.x | bash
