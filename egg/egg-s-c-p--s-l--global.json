@@ -10,7 +10,7 @@
     "description": "Installs the game SCP: Secret Laboratory with Servermod2 and MultiAdmin.",
     "features": null,
     "docker_images": {
-        "joker119\/scp_image:joker": "joker119\/scp_image:joker"
+        "joker119\/scp_image:joker": "joker119\/scp_image:Global"
     },
     "file_denylist": [],
     "startup": ".\/LocalAdmin {{SERVER_PORT}} -c -- -sharenonconfigs -configpath \/home\/container\/scp_server\/servers\/server1",
