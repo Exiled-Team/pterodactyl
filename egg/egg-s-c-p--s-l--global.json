@@ -4,25 +4,25 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-03-02T20:46:53-05:00",
-    "name": "SCP:SL Global",
-    "author": "joke119@exiled.host",
-    "description": "Installs the game SCP: Secret Laboratory with Servermod2 and MultiAdmin.",
+    "exported_at": "2023-04-28T09:30:24-04:00",
+    "name": "SCP:SL-Global",
+    "author": "joker@jokersplaygrounds.com",
+    "description": "Installs the game SCP: Secret Laboratory with Exiled.",
     "features": null,
     "docker_images": {
-        "joker119\/scp_image:joker": "joker119\/scp_image:Global"
+        "joker119\/scp_image:Global": "joker119\/scp_image:Global"
     },
     "file_denylist": [],
     "startup": ".\/LocalAdmin {{SERVER_PORT}} -c -- -sharenonconfigs -configpath \/home\/container\/scp_server\/servers\/server1",
     "config": {
-        "files": "{\r\n    \"scp_server\/servers\/server1\/scp_multiadmin.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"max_memory\": \"max_memory: {{server.build.env.SERVER_MEMORY}}\"\r\n        }\r\n    },\r\n    \"scp_server\/scp_multiadmin.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"max_memory\": \"max_memory: {{server.build.env.SERVER_MEMORY}}\"\r\n        }\r\n    },\r\n    \"\/home\/container\/.config\/EXILED\/Configs\/{{server.build..default.port}}-config.yml\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"status_update_interval\": \"status_update_interval: 60\",\r\n            \"channel_topic_update_interval\": \"channel_topic_update_interval: 300\"\r\n        }\r\n    },\r\n    \"DiscordIntegration\/config.yml\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"messages_delay\": \"messages_delay: 10000\"\r\n        }\r\n    }\r\n}",
+        "files": "{\r\n    \r\n}",
         "startup": "{\"done\": \"Waiting for players\"}",
         "logs": "{\r\n    \"custom\": false,\r\n    \"location\": \"logs\/latest.log\"\r\n}",
         "stop": "exit"
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\necho \"Installing steamcmd..\"\r\necho \"deb http:\/\/mirrors.linode.com\/debian stretch main non-free\" >> \/etc\/apt\/sources.list\r\necho \"deb-src http:\/\/mirrors.linode.com\/debian stretch main non-free\" >> \/etc\/apt\/sources.list\r\necho steamcmd steam\/question select \"I AGREE\" | debconf-set-selections\r\necho steamcmd steam\/license note '' | debconf-set-selections\r\nsleep 1\r\n\r\nEX=\"\"\r\n\r\nif [ ! -z \"$SPECIAL_BRANCH\" ]; then\r\n    EX=\"-beta $SPECIAL_BRANCH\"\r\n    if [ ! -z \"$BRANCH_PASSWORD\" ]; then\r\n        EX=\"-beta $SPECIAL_BRANCH -betapassword $BRANCH_PASSWORD\"\r\n    fi\r\nfi\r\n\r\ndpkg --add-architecture i386\r\napt-get update\r\napt-get install lib32gcc1 wget curl tar whiptail steamcmd nodejs -y\r\nsleep 1\r\n\r\ncd \/mnt\/server\r\n\r\n#curl -o steamcmd.tar.gz http:\/\/media.steampowered.com\/installer\/steamcmd_linux.tar.gz\r\n#tar -xzvf steamcmd.tar.gz\r\n#sleep 1\r\n\r\n\/usr\/games\/steamcmd +force_install_dir \/mnt\/server\/scp_server +login anonymous +app_update 996560 validate $EX +quit &&\r\necho \"Downloading EXILED..\"\r\nif [ -f Exiled.Installer-Linux ]; then\r\n    rm -rf Exiled.Installer-Linux\r\nfi\r\n\r\nwget https:\/\/github.com\/Exiled-Team\/EXILED\/releases\/latest\/download\/Exiled.Installer-Linux\r\necho \"Installing EXILED..\"\r\nls\r\nchmod +x Exiled.Installer-Linux\r\nEXTRA=\"\"\r\nif [ $PRE_RELEASE == 1 ]; then\r\n    EXTRA=\"--pre-releases\"\r\nfi\r\nif [ ! -z \"$EXILED_VER\" ]; then\r\n    EXTRA=\"--target-version $EXILED_VER\"\r\nfi\r\n\r\nif [ \"$EXILED_VER\" != \"-1\" ]; then\r\n    .\/Exiled.Installer-Linux -p \/mnt\/server\/scp_server --appdata \/mnt\/server\/.config --pre-releases --exit\r\nfi\r\necho \"Installing Discord Integration bot..\"\r\nif [ ! -d \"DiscordIntegration\" ]; then\r\n    mkdir DiscordIntegration\r\n    cd DiscordIntegration\r\n    wget https:\/\/github.com\/Exiled-Team\/DiscordIntegration\/releases\/latest\/download\/DiscordIntegration.bot\r\n    mkdir logs\r\nfi\r\n\r\ncd scp_server\r\n\r\nif [ ! -d \"\/mnt\/server\/.config\" ]; then\r\n    mkdir \"\/mnt\/server\/.config\"\r\nfi\r\n\r\nif [ ! -d \"\/mnt\/server\/.config\/SCP Secret Laboratory\" ]; then\r\n    mkdir \"\/mnt\/server\/.config\/SCP Secret Laboratory\"\r\nfi\r\n\r\nif [ ! -d \"\/mnt\/server\/scp_server\/servers\/server1\" ]; then\r\n    mkdir -p \"\/mnt\/server\/scp_server\/servers\/server1\"\r\nfi\r\n\r\necho \"Installation complete!\"",
+            "script": "#!\/bin\/bash\r\nEX=\"\"\r\n\r\nif [ ! -z \"$SPECIAL_BRANCH\" ]; then\r\n    EX=\"-beta $SPECIAL_BRANCH\"\r\n    if [ ! -z \"$BRANCH_PASSWORD\" ]; then\r\n        EX=\"-beta $SPECIAL_BRANCH -betapassword $BRANCH_PASSWORD\"\r\n    fi\r\nfi\r\n\r\ndpkg --add-architecture i386\r\napt-get update\r\napt-get install lib32gcc1 wget curl tar whiptail -y\r\nsleep 1\r\n\r\ncd \/mnt\/server\r\n\r\nif [[ -f \"steamcmd_linux.tar.gz\" ]]; then\r\n    rm -rf steamcmd_linux.tar.gz\r\nfi\r\nwget https:\/\/steamcdn-a.akamaihd.net\/client\/installer\/steamcmd_linux.tar.gz\r\ntar -xzvf steamcmd_linux.tar.gz\r\nsleep 1\r\n\r\n.\/steamcmd.sh +force_install_dir \/mnt\/server\/scp_server +login anonymous +app_update 996560 validate $EX +quit &&\r\necho \"Downloading EXILED..\"\r\nif [ -f Exiled.Installer-Linux ]; then\r\n    rm -rf Exiled.Installer-Linux\r\nfi\r\n\r\nwget https:\/\/github.com\/Exiled-Team\/EXILED\/releases\/latest\/download\/Exiled.Installer-Linux\r\necho \"Installing EXILED..\"\r\nls\r\nchmod +x Exiled.Installer-Linux\r\nEXTRA=\"\"\r\nif [ $PRE_RELEASE == 1 ]; then\r\n    EXTRA=\"--pre-releases\"\r\nfi\r\nif [ ! -z \"$EXILED_VER\" ]; then\r\n    EXTRA=\"--target-version $EXILED_VER\"\r\nfi\r\n\r\nif [ \"$EXILED_VER\" != \"-1\" ]; then\r\n    .\/Exiled.Installer-Linux -p \/mnt\/server\/scp_server --appdata \/mnt\/server\/.config --pre-releases --exit\r\nfi\r\necho \"Installing Discord Integration bot..\"\r\nif [ ! -d \"DiscordIntegration\" ]; then\r\n    mkdir DiscordIntegration\r\n    cd DiscordIntegration\r\n    wget https:\/\/github.com\/Exiled-Team\/DiscordIntegration\/releases\/latest\/download\/DiscordIntegration.bot\r\n    mkdir logs\r\nfi\r\n\r\ncd scp_server\r\n\r\nif [ ! -d \"\/mnt\/server\/.config\" ]; then\r\n    mkdir \"\/mnt\/server\/.config\"\r\nfi\r\n\r\nif [ ! -d \"\/mnt\/server\/.config\/SCP Secret Laboratory\" ]; then\r\n    mkdir \"\/mnt\/server\/.config\/SCP Secret Laboratory\"\r\nfi\r\n\r\nif [ ! -d \"\/mnt\/server\/scp_server\/servers\/server1\" ]; then\r\n    mkdir -p \"\/mnt\/server\/scp_server\/servers\/server1\"\r\nfi\r\n\r\necho \"Installation complete!\"",
             "container": "mono:6",
             "entrypoint": "bash"
         }
@@ -45,7 +45,7 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string|max:30",
+            "rules": "nullable|string|max:20",
             "field_type": "text"
         },
         {
